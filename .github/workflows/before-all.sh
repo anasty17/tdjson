@@ -7,7 +7,7 @@ yum install wget gcc-c++ make git perl-IPC-Cmd gperf -y
 /opt/python/cp313-cp313/bin/python -m pip install cmake
 
 # openssl from source
-git clone --depth 1 https://github.com/openssl/openssl
+git clone --depth 1 --branch OpenSSL_1_1_1 https://github.com/openssl/openssl
 cd openssl
 ./Configure
 make -j$(($(nproc) + 2)) || exit 1
