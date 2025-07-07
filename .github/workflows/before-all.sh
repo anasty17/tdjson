@@ -9,7 +9,7 @@ yum install wget gcc-c++ make git perl-IPC-Cmd gperf -y
 # openssl from source
 git clone --depth 1 --branch OpenSSL_1_1_1 https://github.com/openssl/openssl
 cd openssl
-./Configure
+./config
 make -j$(($(nproc) + 2)) || exit 1
 make install
 ldconfig
