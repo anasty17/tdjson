@@ -57,7 +57,16 @@ jobs:
     needs: prepare
     strategy:
       matrix:
-        runner: [ubuntu-latest, ubuntu-24.04-arm]
+        include:
+          - runner: ubuntu-latest
+            arch: x86_64
+            setup_qemu: false
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+            setup_qemu: false
+          - runner: ubuntu-24.04-arm
+            arch: armv7l
+            setup_qemu: true
 
     runs-on: ${{ matrix.runner }}
     steps:
@@ -68,6 +77,12 @@ jobs:
         with:
           name: updated-files
           path: .
+
+      - name: Set up QEMU for ARMv7 emulation
+        if: matrix.setup_qemu
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -80,12 +95,12 @@ jobs:
       - name: Build wheels
         run: |
           mkdir -p ./wheelhouse
-          python -m cibuildwheel . --output-dir ./wheelhouse
+          python -m cibuildwheel --platform linux --arch ${{ matrix.arch }} --output-dir ./wheelhouse
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ matrix.runner }}
+          name: wheels-${{ matrix.runner }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl
 
   publish:
