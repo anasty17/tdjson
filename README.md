@@ -4,7 +4,7 @@
 
 ## Compatibility
 
-`tdjson` is compatible with almost all Linux `x86_64` distributions that use `glibc 2.17+`. This includes most modern Linux distributions:
+`tdjson` is compatible with most Linux `x86_64` and `aarch64` (arm64) distributions that use `glibc 2.17+`. This includes most modern Linux distributions:
 
 - Debian 8+
 - Ubuntu 13.10+
