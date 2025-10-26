@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       LATEST_TDLIB_VERSION: ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}
-      PYPI_RELEASE_VERSION: ${{ steps.vars.outputs.PYPI_RELEASE_VERSION }}
       LATEST_TDLIB_COMMIT_HASH: ${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }}
+      PYPI_RELEASE_VERSION: ${{ steps.vars.outputs.PYPI_RELEASE_VERSION }}
 
     steps:
       - uses: actions/checkout@v4
@@ -86,7 +86,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   publish:
-    needs: build-wheels
+    needs: [prepare, build-wheels]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -114,7 +114,7 @@ jobs:
       - name: Commit updated files
         uses: EndBug/add-and-commit@v9
         with:
-          message: "Update TDLib to ${{ needs.prepare.outputs.LATEST_TDLIB_VERSION }}"
+          message: "Update TDLib to ${{ needs.prepare.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ needs.prepare.outputs.LATEST_TDLIB_COMMIT_HASH }})"
           add: '["pyproject.toml", "README.md", "tdjson/__init__.py"]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
