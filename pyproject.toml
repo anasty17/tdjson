@@ -25,8 +25,9 @@ build-verbosity = 1
 build = "cp39* cp310* cp311* cp312* cp313*"
 enable = ["cpython-freethreading"]
 skip = "*musllinux*"
-archs = ["x86_64"]
+archs = ["auto"]
 
 [tool.cibuildwheel.linux]
 before-all = ".github/workflows/before-all.sh"
 manylinux-x86_64-image = "manylinux2014"
+manylinux-aarch64-image = "manylinux2014"
